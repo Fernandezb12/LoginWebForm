@@ -10,7 +10,6 @@ using System.Web.Services;
 using System.Web.Script.Serialization;
 using CapaPresentacion.Custom;
 
-
 namespace CapaPresentacion
 {
     public partial class frmGestionarPaciente : BasePage
@@ -33,6 +32,8 @@ namespace CapaPresentacion
             }
             catch (Exception ex)
             {
+                // Manejo del error o registro del mismo
+                System.Diagnostics.Debug.WriteLine("Error: " + ex.Message);
                 Lista = new List<Paciente>();
             }
             return Lista;
@@ -46,7 +47,6 @@ namespace CapaPresentacion
                 IdPaciente = Convert.ToInt32(id),
                 Direccion = direccion
             };
-
             bool ok = PacienteLN.getInstance().Actualizar(objPaciente);
             return ok;
         }
@@ -55,11 +55,8 @@ namespace CapaPresentacion
         public static bool EliminarDatosPaciente(String id)
         {
             Int32 idPaciente = Convert.ToInt32(id);
-
             bool ok = PacienteLN.getInstance().Eliminar(idPaciente);
-            
             return ok;
-
         }
 
         private Paciente GetEntity()
@@ -75,7 +72,6 @@ namespace CapaPresentacion
             objPaciente.Direccion = txtDireccion.Text;
             objPaciente.Telefono = txtTelefono.Text;
             objPaciente.Estado = true;
-
             return objPaciente;
         }
 
@@ -88,7 +84,6 @@ namespace CapaPresentacion
             if (response)
             {
                 Response.Write("<script>alert('REGISTRO CORRECTO.')</script>");
-
             }
             else
             {

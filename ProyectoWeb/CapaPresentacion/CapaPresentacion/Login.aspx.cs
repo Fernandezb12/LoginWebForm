@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.Security;
 using CapaEntidades;
 using CapaLogicaNegocio;
-using CapaPresentacion.Custom;
 
 namespace CapaPresentacion
 {
@@ -21,25 +19,27 @@ namespace CapaPresentacion
             }
         }
 
-        protected void LoginUser_Authenticate(object sender, AuthenticateEventArgs e)
+        protected void btnLogin_Click(object sender, EventArgs e)
         {
-            bool auth = Membership.ValidateUser(LoginUser.UserName, LoginUser.Password);
+            string email = txtEmail.Text;
+            string password = txtPassword.Text;
 
-            if (auth)
+            try
             {
-                Empleado objEmpleado = EmpleadoLN.getInstance().AccesoSistema(LoginUser.UserName, LoginUser.Password);
-
+                Empleado objEmpleado = EmpleadoLN.getInstance().AccesoSistema(email, password);
                 if (objEmpleado != null)
                 {
-                    SessionManager _SessionManager = new SessionManager(Session);
-                    //SessionManager.UserSessionId = objEmpleado.ID.ToString();
-                    _SessionManager.UserSessionEmpleado = objEmpleado;
-                    FormsAuthentication.RedirectFromLoginPage(LoginUser.UserName, false);
+                    Session["UserSessionEmpleado"] = objEmpleado;
+                    FormsAuthentication.RedirectFromLoginPage(email, false);
                 }
                 else
                 {
-                    Response.Write("<script>alert('USUARIO INCORRECTO.')</script>");
+                    lblMessage.Text = "Invalid email or password.";
                 }
+            }
+            catch (Exception ex)
+            {
+                lblMessage.Text = "Error connecting to the database: " + ex.Message;
             }
         }
     }

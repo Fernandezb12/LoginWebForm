@@ -10,8 +10,7 @@ namespace CapaEntidades
     {
         public int IdMedico { get; set; }
         public Especialidad Especialidad { get; set; }
-        public bool Estado { get; set; }
-
+        public new bool Estado { get; set; }
 
         public Medico()
             : base()
