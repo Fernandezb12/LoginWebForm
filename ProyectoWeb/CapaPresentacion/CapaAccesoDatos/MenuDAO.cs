@@ -72,9 +72,9 @@ namespace CapaAccesoDatos
                 cmd.Parameters.AddWithValue("@prmIdMenu", menu.IdMenu);
                 cmd.Parameters.AddWithValue("@prmNombreMenu", menu.Nombre);
                 cmd.Parameters.AddWithValue("@prmUrlMenu", menu.Url);
-                cmd.Parameters.Add("@prmIdMenuParent", menu.IdMenuParent);
-                cmd.Parameters.Add("@prmIsSubMenu", menu.IsSubMenu);
-                cmd.Parameters.Add("@prmEstado", menu.Estado);
+                cmd.Parameters.AddWithValue("@prmIdMenuParent", menu.IdMenuParent);
+                cmd.Parameters.AddWithValue("@prmIsSubMenu", menu.IsSubMenu);
+                cmd.Parameters.AddWithValue("@prmEstado", menu.Estado);
                 conn.Open();
 
                 cmd.ExecuteNonQuery();

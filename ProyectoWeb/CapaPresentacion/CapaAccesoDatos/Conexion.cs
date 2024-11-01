@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
+using System.Data.SqlClient;
 
 namespace CapaAccesoDatos
 {
@@ -26,15 +22,12 @@ namespace CapaAccesoDatos
         public SqlConnection ConexionBD()
         {
             SqlConnection conexion = new SqlConnection();
-            //conexion.ConnectionString = "Data Source=0.0.0.0; Initial Catalog=test; User ID=ss; Password=qRr8/1qNn__aaaaw|";
             conexion.ConnectionString = GetConnectionString();
             return conexion;
         }
-
-        public String GetConnectionString()
+        public string GetConnectionString()
         {
-            return ConfigurationManager.ConnectionStrings["local_clinica"].ConnectionString;
+            return ConfigurationManager.ConnectionStrings["DBClinica_testConnectionString"].ConnectionString;
         }
-
     }
 }

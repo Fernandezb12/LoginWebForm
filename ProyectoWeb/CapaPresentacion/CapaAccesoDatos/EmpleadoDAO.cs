@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CapaEntidades;
 using System.Data;
 using System.Data.SqlClient;
+using CapaEntidades;
 
 namespace CapaAccesoDatos
 {
@@ -24,32 +21,37 @@ namespace CapaAccesoDatos
         }
         #endregion
 
-        public Empleado AccesoSistema(String user, String pass)
+        public Empleado AccesoSistema(string user, string pass)
         {
             SqlConnection conexion = null;
             SqlCommand cmd = null;
             Empleado objEmpleado = null;
             SqlDataReader dr = null;
+
             try
             {
                 conexion = Conexion.getInstance().ConexionBD();
-                cmd = new SqlCommand("spAccesoSistema", conexion);
-                cmd.CommandType = CommandType.StoredProcedure;
+                cmd = new SqlCommand("spAccesoSistema", conexion)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
                 cmd.Parameters.AddWithValue("@prmUser", user);
                 cmd.Parameters.AddWithValue("@prmPass", pass);
                 conexion.Open();
                 dr = cmd.ExecuteReader();
                 if (dr.Read())
                 {
-                    objEmpleado = new Empleado();
-                    objEmpleado.ID = Convert.ToInt32(dr["idEmpleado"].ToString());
-                    objEmpleado.Usuario = dr["usuario"].ToString();
-                    objEmpleado.Clave = dr["clave"].ToString();
-                    objEmpleado.Nombre = dr["nombres"].ToString();
-                    objEmpleado.ApPaterno = dr["apPaterno"].ToString();
-                    objEmpleado.ApMaterno = dr["apMaterno"].ToString();
-                    objEmpleado.NroDocumento = dr["nroDocumento"].ToString();
-                    objEmpleado.Estado = true;
+                    objEmpleado = new Empleado
+                    {
+                        ID = Convert.ToInt32(dr["idEmpleado"].ToString()),
+                        Usuario = dr["usuario"].ToString(),
+                        Clave = dr["clave"].ToString(),
+                        Nombre = dr["nombres"].ToString(),
+                        ApPaterno = dr["apPaterno"].ToString(),
+                        ApMaterno = dr["apMaterno"].ToString(),
+                        NroDocumento = dr["nroDocumento"].ToString(),
+                        Estado = true
+                    };
                 }
             }
             catch (Exception ex)
@@ -64,7 +66,7 @@ namespace CapaAccesoDatos
             return objEmpleado;
         }
 
-        public Empleado BuscarEmpleado(String nroDocumento)
+        public Empleado BuscarEmpleado(string nroDocumento)
         {
             SqlConnection con = null;
             SqlCommand cmd = null;
@@ -74,14 +76,13 @@ namespace CapaAccesoDatos
             try
             {
                 con = Conexion.getInstance().ConexionBD();
-                cmd = new SqlCommand("spBuscarEmpleado", con);
+                cmd = new SqlCommand("spBuscarEmpleado", con)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
                 cmd.Parameters.AddWithValue("@prmNroDocumento", nroDocumento);
-                cmd.CommandType = CommandType.StoredProcedure;
-
                 con.Open();
-
                 dr = cmd.ExecuteReader();
-
                 if (dr.Read())
                 {
                     objEmpleado.ID = Convert.ToInt32(dr["idEmpleado"].ToString());
@@ -91,7 +92,6 @@ namespace CapaAccesoDatos
                     objEmpleado.NroDocumento = dr["nroDocumento"].ToString();
                     objEmpleado.RTipoEmpleado.Descripcion = dr["usuario"].ToString();
                 }
-
             }
             catch (Exception e)
             {
@@ -101,9 +101,7 @@ namespace CapaAccesoDatos
             {
                 con.Close();
             }
-
             return objEmpleado;
         }
-
     }
 }
